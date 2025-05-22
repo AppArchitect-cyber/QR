@@ -3,40 +3,94 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PDF Search & Download</title>
+  <title>PDF Library</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #f4f4f4;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 40px 20px;
+      color: #333;
     }
+
     h1 {
-      margin-bottom: 10px;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2rem;
+      color: #2c3e50;
     }
-    input {
-      padding: 10px;
-      width: 300px;
-      margin-bottom: 20px;
+
+    #searchInput {
+      display: block;
+      margin: 0 auto 30px auto;
+      width: 100%;
+      max-width: 400px;
+      padding: 12px 16px;
       border: 1px solid #ccc;
-      border-radius: 4px;
+      border-radius: 8px;
+      font-size: 1rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      transition: all 0.2s ease-in-out;
     }
+
+    #searchInput:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+    }
+
     ul {
       list-style: none;
       padding: 0;
+      margin: 0 auto;
+      max-width: 700px;
     }
+
     li {
       background: #fff;
-      padding: 15px;
-      margin: 10px 0;
-      border-radius: 6px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 20px 25px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
+
+    li:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+    }
+
+    li strong {
+      font-size: 1.1rem;
+      color: #333;
+    }
+
     a {
-      color: #007bff;
+      background-color: #007bff;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 6px;
       text-decoration: none;
+      font-weight: 500;
+      transition: background-color 0.2s ease;
     }
+
     a:hover {
-      text-decoration: underline;
+      background-color: #0056b3;
+    }
+
+    @media (max-width: 600px) {
+      li {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      a {
+        margin-top: 10px;
+      }
     }
   </style>
 </head>
@@ -48,32 +102,29 @@
   <ul id="pdfList"></ul>
 
   <script>
-    // Replace or add more entries as needed
     const pdfs = [
-  { title: "bhoi", file: "bhoi.pdf" },
-  { title: "barik", file: "barik.pdf" },
-  { title: "behera", file: "behera.pdf" },
-  { title: "suman", file: "suman.pdf" },
-  { title: "guduli", file: "guduli.pdf" },
-  { title: "panda", file: "panda.pdf" },
-  { title: "madan", file: "madan.pdf" },
-  { title: "premananda", file: "premananda.pdf" },
-  { title: "laxmidhar", file: "laxmidhar.pdf" },
-  { title: "AR", file: "AR.pdf" },
-  { title: "anil", file: "anil.pdf" },
-  { title: "amita", file: "amita.pdf" },
-  { title: "anubha", file: "anubha.pdf" },
-  { title: "maa_annapurna", file: "maa_annapurna.pdf" },
-  { title: "pradeep", file: "pradeep.pdf" },
-  { title: "Kumar", file: "Kumar.pdf" },
-  { title: "saroj", file: "saroj.pdf" },
-  { title: "dillip", file: "dillip.pdf" },
-  { title: "kuna", file: "kuna.pdf" },
-  { title: "das_suppliers", file: "das_suppliers.pdf" },
-  { title: "dreams_N_destinations", file: "dreams_N_destinations.pdf" }
-];
-
-;
+      { title: "bhoi", file: "bhoi.pdf" },
+      { title: "barik", file: "barik.pdf" },
+      { title: "behera", file: "behera.pdf" },
+      { title: "suman", file: "suman.pdf" },
+      { title: "guduli", file: "guduli.pdf" },
+      { title: "panda", file: "panda.pdf" },
+      { title: "madan", file: "madan.pdf" },
+      { title: "premananda", file: "premananda.pdf" },
+      { title: "laxmidhar", file: "laxmidhar.pdf" },
+      { title: "AR", file: "AR.pdf" },
+      { title: "anil", file: "anil.pdf" },
+      { title: "amita", file: "amita.pdf" },
+      { title: "anubha", file: "anubha.pdf" },
+      { title: "maa_annapurna", file: "maa_annapurna.pdf" },
+      { title: "pradeep", file: "pradeep.pdf" },
+      { title: "Kumar", file: "Kumar.pdf" },
+      { title: "saroj", file: "saroj.pdf" },
+      { title: "dillip", file: "dillip.pdf" },
+      { title: "kuna", file: "kuna.pdf" },
+      { title: "das_suppliers", file: "das_suppliers.pdf" },
+      { title: "dreams_N_destinations", file: "dreams_N_destinations.pdf" }
+    ];
 
     const listElement = document.getElementById("pdfList");
     const searchInput = document.getElementById("searchInput");
@@ -91,7 +142,7 @@
 
       filtered.forEach(pdf => {
         const li = document.createElement("li");
-        li.innerHTML = `<strong>${pdf.title}</strong><br/><a href="${pdf.file}" download>Download PDF</a>`;
+        li.innerHTML = `<strong>${pdf.title.replace(/_/g, ' ')}</strong><a href="${pdf.file}" download>Download</a>`;
         listElement.appendChild(li);
       });
     }
@@ -100,7 +151,6 @@
       displayPDFs(searchInput.value);
     });
 
-    // Initial display
     displayPDFs();
   </script>
 
