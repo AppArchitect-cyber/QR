@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PDF Search & Download</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    input {
+      padding: 10px;
+      width: 300px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: #fff;
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>PDF Library</h1>
+  <input type="text" id="searchInput" placeholder="Search PDFs..." />
+
+  <ul id="pdfList"></ul>
+
+  <script>
+    // Replace or add more entries as needed
+    const pdfs = [
+  { title: "bhoi", file: "pdfs/bhoi.pdf" },
+  { title: "barik", file: "pdfs/barik.pdf" },
+  { title: "behera", file: "pdfs/behera.pdf" },
+  { title: "suman", file: "pdfs/suman.pdf" },
+  { title: "guduli", file: "pdfs/guduli.pdf" },
+  { title: "panda", file: "pdfs/panda.pdf" },
+  { title: "madan", file: "pdfs/madan.pdf" },
+  { title: "premananda", file: "pdfs/premananda.pdf" },
+  { title: "laxmidhar", file: "pdfs/laxmidhar.pdf" },
+  { title: "AR", file: "pdfs/AR.pdf" },
+  { title: "anil", file: "pdfs/anil.pdf" },
+  { title: "amita", file: "pdfs/amita.pdf" },
+  { title: "anubha", file: "pdfs/anubha.pdf" },
+  { title: "maa_annapurna", file: "pdfs/maa_annapurna.pdf" },
+  { title: "pradeep", file: "pdfs/pradeep.pdf" },
+  { title: "Kumar", file: "pdfs/Kumar.pdf" },
+  { title: "saroj", file: "pdfs/saroj.pdf" },
+  { title: "dillip", file: "pdfs/dillip.pdf" },
+  { title: "kuna", file: "pdfs/kuna.pdf" },
+  { title: "das_suppliers", file: "pdfs/das_suppliers.pdf" },
+  { title: "dreams_N_destinations", file: "pdfs/dreams_N_destinations.pdf" }
+];
+;
+
+    const listElement = document.getElementById("pdfList");
+    const searchInput = document.getElementById("searchInput");
+
+    function displayPDFs(filter = "") {
+      listElement.innerHTML = "";
+      const filtered = pdfs.filter(pdf =>
+        pdf.title.toLowerCase().includes(filter.toLowerCase())
+      );
+
+      if (filtered.length === 0) {
+        listElement.innerHTML = "<li>No matching PDFs found.</li>";
+        return;
+      }
+
+      filtered.forEach(pdf => {
+        const li = document.createElement("li");
+        li.innerHTML = `<strong>${pdf.title}</strong><br/><a href="${pdf.file}" download>Download PDF</a>`;
+        listElement.appendChild(li);
+      });
+    }
+
+    searchInput.addEventListener("input", () => {
+      displayPDFs(searchInput.value);
+    });
+
+    // Initial display
+    displayPDFs();
+  </script>
+
+</body>
+</html>
